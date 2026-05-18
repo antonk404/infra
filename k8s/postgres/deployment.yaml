@@ -1,17 +1,17 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: matrix-postgres
+  name: shared-postgres
   namespace: antlers
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: matrix-postgres
+      app: shared-postgres
   template:
     metadata:
       labels:
-        app: matrix-postgres
+        app: shared-postgres
     spec:
       nodeSelector:
         role: hub
@@ -24,14 +24,14 @@ spec:
           image: postgres:15-alpine
           env:
             - name: POSTGRES_USER
-              value: synapse
+              value: postgres
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: matrix-synapse-secret
+                  name: shared-postgres-secret
                   key: postgres-password
             - name: POSTGRES_DB
-              value: synapse
+              value: postgres
             - name: POSTGRES_INITDB_ARGS
               value: "--encoding=UTF8 --lc-collate=C --lc-ctype=C"
           ports:
@@ -49,4 +49,4 @@ spec:
       volumes:
         - name: data
           persistentVolumeClaim:
-            claimName: matrix-postgres-data
+            claimName: shared-postgres-data
