@@ -20,6 +20,9 @@ spec:
           operator: Exists
           effect: NoSchedule
       hostNetwork: true
+      securityContext:
+        runAsUser: 100
+        runAsGroup: 1000
       containers:
         - name: vault
           image: hashicorp/vault:latest
@@ -33,8 +36,6 @@ spec:
                 secretKeyRef:
                   name: core-vault-token
                   key: token
-            - name: SKIP_CHOWN
-              value: "true"
           ports:
             - containerPort: 8200
             - containerPort: 8201
