@@ -30,12 +30,6 @@ spec:
             - vault
             - server
             - -config=/vault/config/vault.hcl
-          env:
-            - name: VAULT_TOKEN
-              valueFrom:
-                secretKeyRef:
-                  name: core-vault-token
-                  key: token
           ports:
             - containerPort: 8200
             - containerPort: 8201
