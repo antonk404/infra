@@ -1,0 +1,22 @@
+namespace: antlers
+
+image:
+  repository: filebrowser/filebrowser
+  tag: latest
+
+timezone: Europe/Berlin
+
+storage:
+  srv: 1Gi
+  db: 100Mi
+
+resources:
+  requests:
+    cpu: 50m
+    memory: 64Mi
+  limits:
+    cpu: 200m
+    memory: 128Mi
+
+service:
+  port: 80

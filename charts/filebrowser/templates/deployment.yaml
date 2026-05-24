@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: filebrowser
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: filebrowser
+  template:
+    metadata:
+      labels:
+        app: filebrowser
+    spec:
+      nodeSelector:
+        role: hub
+      tolerations:
+        - key: node-role.kubernetes.io/control-plane
+          operator: Exists
+          effect: NoSchedule
+      securityContext:
+        runAsUser: 0
+        runAsGroup: 0
+      containers:
+        - name: filebrowser
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          args: ["--database", "/db/database.db", "--port", "{{ .Values.service.port }}"]
+          env:
+            - name: TZ
+              value: {{ .Values.timezone }}
+          ports:
+            - containerPort: {{ .Values.service.port }}
+          resources:
+            requests:
+              cpu: {{ .Values.resources.requests.cpu }}
+              memory: {{ .Values.resources.requests.memory }}
+            limits:
+              cpu: {{ .Values.resources.limits.cpu }}
+              memory: {{ .Values.resources.limits.memory }}
+          volumeMounts:
+            - name: srv
+              mountPath: /srv
+            - name: db
+              mountPath: /db
+      volumes:
+        - name: srv
+          persistentVolumeClaim:
+            claimName: filebrowser-srv
+        - name: db
+          persistentVolumeClaim:
+            claimName: filebrowser-db

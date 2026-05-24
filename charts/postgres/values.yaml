@@ -1,0 +1,25 @@
+namespace: antlers
+
+image:
+  repository: postgres
+  tag: 15-alpine
+
+auth:
+  username: postgres
+  database: postgres
+  existingSecret: shared-postgres-secret
+  secretKey: postgres-password
+
+storage:
+  size: 5Gi
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
+
+service:
+  port: 5432

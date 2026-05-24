@@ -1,0 +1,4 @@
+apiVersion: v2
+name: coredns
+description: CoreDNS with custom zone config
+version: 0.1.0

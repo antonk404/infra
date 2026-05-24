@@ -1,0 +1,19 @@
+namespace: antlers
+
+image:
+  repository: hashicorp/vault
+  tag: latest
+
+apiAddr: "http://30.0.0.1:8200"
+clusterAddr: "http://30.0.0.1:8201"
+
+storage:
+  size: 1Gi
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 256Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi

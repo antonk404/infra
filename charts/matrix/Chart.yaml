@@ -1,0 +1,4 @@
+apiVersion: v2
+name: matrix
+description: Matrix (Synapse + Element)
+version: 0.1.0

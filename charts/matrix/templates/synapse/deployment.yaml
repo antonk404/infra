@@ -1,0 +1,80 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: synapse
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: synapse
+  template:
+    metadata:
+      labels:
+        app: synapse
+    spec:
+      nodeSelector:
+        role: hub
+      tolerations:
+        - key: node-role.kubernetes.io/control-plane
+          operator: Exists
+          effect: NoSchedule
+      initContainers:
+        - name: config-init
+          image: alpine:latest
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              sed -e "s|\${POSTGRES_PASSWORD}|$POSTGRES_PASSWORD|g" \
+                  -e "s|\${REGISTRATION_SHARED_SECRET}|$REGISTRATION_SHARED_SECRET|g" \
+                  -e "s|\${MACAROON_SECRET_KEY}|$MACAROON_SECRET_KEY|g" \
+                  -e "s|\${FORM_SECRET}|$FORM_SECRET|g" \
+                  /config-template/homeserver.yaml > /data/homeserver.yaml
+          env:
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: matrix-synapse-secret
+                  key: postgres-password
+            - name: REGISTRATION_SHARED_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: matrix-synapse-secret
+                  key: registration-shared-secret
+            - name: MACAROON_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: matrix-synapse-secret
+                  key: macaroon-secret-key
+            - name: FORM_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: matrix-synapse-secret
+                  key: form-secret
+          volumeMounts:
+            - name: config-template
+              mountPath: /config-template
+            - name: data
+              mountPath: /data
+      containers:
+        - name: synapse
+          image: {{ .Values.synapse.image.repository }}:{{ .Values.synapse.image.tag }}
+          ports:
+            - containerPort: 8008
+          resources:
+            requests:
+              cpu: {{ .Values.synapse.resources.requests.cpu }}
+              memory: {{ .Values.synapse.resources.requests.memory }}
+            limits:
+              cpu: {{ .Values.synapse.resources.limits.cpu }}
+              memory: {{ .Values.synapse.resources.limits.memory }}
+          volumeMounts:
+            - name: data
+              mountPath: /data
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: matrix-synapse-data
+        - name: config-template
+          configMap:
+            name: synapse-config

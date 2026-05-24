@@ -1,0 +1,4 @@
+apiVersion: v2
+name: eso
+description: External Secrets Operator - Vault ClusterSecretStore
+version: 0.1.0

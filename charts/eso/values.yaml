@@ -1,0 +1,7 @@
+namespace: antlers
+
+vault:
+  server: "http://30.0.0.1:8200"
+  path: "infra"
+  tokenSecret: vault-token
+  tokenKey: token

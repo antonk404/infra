@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: element-config
+  namespace: {{ .Values.namespace }}
+data:
+  config.json: |
+    {
+      "default_server_config": {
+        "m.homeserver": {
+          "base_url": "{{ .Values.element.homeserverUrl }}",
+          "server_name": "{{ .Values.serverName }}"
+        }
+      },
+      "brand": "Social network inside antlers network",
+      "disable_guests": true,
+      "disable_login_language_selector": false,
+      "disable_3pid_login": true,
+      "default_theme": "dark",
+      "room_directory": {
+        "servers": ["{{ .Values.serverName }}"]
+      },
+      "setting_defaults": {
+        "breadcrumbs": true
+      },
+      "jitsi": {
+        "preferredDomain": "{{ .Values.element.jitsiDomain }}"
+      }
+    }

@@ -1,0 +1,53 @@
+namespace: antlers
+
+imageTag: stable-9584
+timezone: Europe/Moscow
+
+xmpp:
+  domain: meet.jitsi
+  authDomain: auth.meet.jitsi
+  mucDomain: muc.meet.jitsi
+  internalMucDomain: internal-muc.meet.jitsi
+
+web:
+  publicUrl: "https://30.0.0.1:8443"
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 256Mi
+
+prosody:
+  storage:
+    size: 200Mi
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 256Mi
+
+jicofo:
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 256Mi
+
+jvb:
+  hostAddress: "30.0.0.1"
+  resources:
+    requests:
+      cpu: 200m
+      memory: 256Mi
+    limits:
+      cpu: 1000m
+      memory: 512Mi
+
+secret:
+  vaultPath: services/jitsi

@@ -1,0 +1,4 @@
+apiVersion: v2
+name: jitsi
+description: Jitsi Meet (web + prosody + jicofo + jvb)
+version: 0.1.0

@@ -1,0 +1,49 @@
+namespace: antlers
+
+grafana:
+  image:
+    repository: grafana/grafana
+    tag: latest
+  storage:
+    size: 1Gi
+  secret:
+    vaultPath: services/grafana
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 256Mi
+  service:
+    port: 3000
+
+prometheus:
+  image:
+    repository: prom/prometheus
+    tag: latest
+  storage:
+    size: 2Gi
+  retention: 30d
+  scrapeInterval: 15s
+  nodes:
+    - address: "30.0.0.1:9100"
+      alias: "Happy Faraday (de)"
+      env: prod
+    - address: "30.0.0.3:9100"
+      alias: "Hungry Kapitsa (ru)"
+      env: prod
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+  service:
+    port: 9090
+
+nodeExporter:
+  image:
+    repository: prom/node-exporter
+    tag: latest

@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jitsi-jvb
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jitsi-jvb
+  template:
+    metadata:
+      labels:
+        app: jitsi-jvb
+    spec:
+      nodeSelector:
+        role: hub
+      tolerations:
+        - key: node-role.kubernetes.io/control-plane
+          operator: Exists
+          effect: NoSchedule
+      containers:
+        - name: jvb
+          image: jitsi/jvb:{{ .Values.imageTag }}
+          env:
+            - name: DOCKER_HOST_ADDRESS
+              value: "{{ .Values.jvb.hostAddress }}"
+            - name: XMPP_AUTH_DOMAIN
+              value: {{ .Values.xmpp.authDomain }}
+            - name: XMPP_INTERNAL_MUC_DOMAIN
+              value: {{ .Values.xmpp.internalMucDomain }}
+            - name: XMPP_SERVER
+              value: prosody
+            - name: JVB_AUTH_USER
+              value: jvb
+            - name: JVB_BREWERY_MUC
+              value: jvbbrewery
+            - name: JVB_PORT
+              value: "10000"
+            - name: JVB_STUN_SERVERS
+              value: "stun.l.google.com:19302,stun1.l.google.com:19302,stun2.l.google.com:19302"
+            - name: JVB_ENABLE_APIS
+              value: rest
+            - name: TZ
+              value: {{ .Values.timezone }}
+            - name: JVB_AUTH_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: jitsi-secret
+                  key: jvb-auth-password
+          ports:
+            - containerPort: 10000
+              hostPort: 10000
+              protocol: UDP
+          resources:
+            requests:
+              cpu: {{ .Values.jvb.resources.requests.cpu }}
+              memory: {{ .Values.jvb.resources.requests.memory }}
+            limits:
+              cpu: {{ .Values.jvb.resources.limits.cpu }}
+              memory: {{ .Values.jvb.resources.limits.memory }}
+          volumeMounts:
+            - name: config
+              mountPath: /config
+      volumes:
+        - name: config
+          emptyDir: {}

@@ -1,0 +1,78 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jitsi-prosody
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jitsi-prosody
+  template:
+    metadata:
+      labels:
+        app: jitsi-prosody
+    spec:
+      nodeSelector:
+        role: hub
+      tolerations:
+        - key: node-role.kubernetes.io/control-plane
+          operator: Exists
+          effect: NoSchedule
+      containers:
+        - name: prosody
+          image: jitsi/prosody:{{ .Values.imageTag }}
+          env:
+            - name: AUTH_TYPE
+              value: internal
+            - name: ENABLE_AUTH
+              value: "0"
+            - name: ENABLE_GUESTS
+              value: "1"
+            - name: XMPP_DOMAIN
+              value: {{ .Values.xmpp.domain }}
+            - name: XMPP_AUTH_DOMAIN
+              value: {{ .Values.xmpp.authDomain }}
+            - name: XMPP_MUC_DOMAIN
+              value: {{ .Values.xmpp.mucDomain }}
+            - name: XMPP_INTERNAL_MUC_DOMAIN
+              value: {{ .Values.xmpp.internalMucDomain }}
+            - name: JICOFO_AUTH_USER
+              value: focus
+            - name: JVB_AUTH_USER
+              value: jvb
+            - name: TZ
+              value: {{ .Values.timezone }}
+            - name: JICOFO_COMPONENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: jitsi-secret
+                  key: jicofo-component-secret
+            - name: JICOFO_AUTH_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: jitsi-secret
+                  key: jicofo-auth-password
+            - name: JVB_AUTH_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: jitsi-secret
+                  key: jvb-auth-password
+          resources:
+            requests:
+              cpu: {{ .Values.prosody.resources.requests.cpu }}
+              memory: {{ .Values.prosody.resources.requests.memory }}
+            limits:
+              cpu: {{ .Values.prosody.resources.limits.cpu }}
+              memory: {{ .Values.prosody.resources.limits.memory }}
+          volumeMounts:
+            - name: config
+              mountPath: /config
+            - name: plugins
+              mountPath: /prosody-plugins-custom
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: jitsi-prosody-config
+        - name: plugins
+          emptyDir: {}

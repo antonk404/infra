@@ -1,0 +1,4 @@
+apiVersion: v2
+name: monitoring
+description: Prometheus + Grafana + node-exporter stack
+version: 0.1.0

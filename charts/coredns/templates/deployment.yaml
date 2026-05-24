@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: coredns
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: coredns
+  template:
+    metadata:
+      labels:
+        app: coredns
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: {{ .Values.nodeHostname }}
+      hostNetwork: true
+      containers:
+        - name: coredns
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          args:
+            - -conf
+            - /Corefile
+          ports:
+            - containerPort: 53
+              protocol: UDP
+            - containerPort: 53
+              protocol: TCP
+          resources:
+            requests:
+              cpu: {{ .Values.resources.requests.cpu }}
+              memory: {{ .Values.resources.requests.memory }}
+            limits:
+              cpu: {{ .Values.resources.limits.cpu }}
+              memory: {{ .Values.resources.limits.memory }}
+          volumeMounts:
+            - name: config
+              mountPath: /Corefile
+              subPath: Corefile
+      volumes:
+        - name: config
+          configMap:
+            name: coredns-config

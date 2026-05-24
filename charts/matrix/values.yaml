@@ -1,0 +1,35 @@
+namespace: antlers
+
+serverName: network.antlers
+
+synapse:
+  image:
+    repository: matrixdotorg/synapse
+    tag: latest
+  storage:
+    size: 2Gi
+  resources:
+    requests:
+      cpu: 200m
+      memory: 256Mi
+    limits:
+      cpu: 1000m
+      memory: 1Gi
+  secret:
+    vaultPath: services/matrix
+
+element:
+  image:
+    repository: vectorim/element-web
+    tag: latest
+  homeserverUrl: http://synapse:8008
+  jitsiDomain: "30.0.0.1:8443"
+  resources:
+    requests:
+      cpu: 50m
+      memory: 64Mi
+    limits:
+      cpu: 200m
+      memory: 128Mi
+  service:
+    port: 80
