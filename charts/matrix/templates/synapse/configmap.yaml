@@ -7,12 +7,14 @@ data:
   homeserver.yaml: |
     server_name: "{{ .Values.serverName }}"
     pid_file: /data/homeserver.pid
+    public_baseurl: https://{{ .Values.serverName }}
     listeners:
       - port: 8008
         resources:
           - compress: false
             names:
               - client
+              - federation
         tls: false
         type: http
         x_forwarded: true
@@ -31,7 +33,6 @@ data:
     report_stats: false
     enable_registration: true
     enable_registration_without_verification: true
-    federation_domain_whitelist: []
     macaroon_secret_key: ${MACAROON_SECRET_KEY}
     form_secret: ${FORM_SECRET}
     signing_key_path: "/data/{{ .Values.serverName }}.signing.key"

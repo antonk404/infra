@@ -1,4 +1,4 @@
-namespace: antlers
+namespace: prod
 
 image:
   repository: coredns/coredns

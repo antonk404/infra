@@ -1,4 +1,4 @@
-namespace: antlers
+namespace: prod
 
 grafana:
   image:

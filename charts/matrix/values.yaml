@@ -1,6 +1,6 @@
-namespace: antlers
+namespace: prod
 
-serverName: network.antlers
+serverName: matrix.antonkslv.ru
 
 synapse:
   image:
@@ -22,7 +22,7 @@ element:
   image:
     repository: vectorim/element-web
     tag: latest
-  homeserverUrl: http://synapse:8008
+  homeserverUrl: https://matrix.antonkslv.ru
   jitsiDomain: "30.0.0.1:8443"
   resources:
     requests:
@@ -33,3 +33,7 @@ element:
       memory: 128Mi
   service:
     port: 80
+
+ingress:
+  matrixHost: matrix.antonkslv.ru
+  elementHost: element.antonkslv.ru

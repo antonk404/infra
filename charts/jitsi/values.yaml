@@ -1,4 +1,4 @@
-namespace: antlers
+namespace: prod
 
 imageTag: stable-9584
 timezone: Europe/Moscow

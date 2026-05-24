@@ -1,4 +1,4 @@
-namespace: antlers
+namespace: prod
 
 vault:
   server: "http://30.0.0.1:8200"
