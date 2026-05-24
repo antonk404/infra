@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: eso
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://gitlab.com/antonk404/matkini-infra.git
+    targetRevision: HEAD
+    path: charts/eso
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: prod
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
