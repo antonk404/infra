@@ -8,7 +8,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://gitlab.com/antonk404/matkini-infra.git
+    repoURL: https://gitlab.com/antonk404/infra.git
     targetRevision: HEAD
     path: charts/cert-manager-config
   destination:
