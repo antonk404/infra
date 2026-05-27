@@ -4,7 +4,7 @@ metadata:
   name: element
   namespace: {{ .Values.namespace }}
 spec:
-  replicas: 1
+  replicas: 0
   selector:
     matchLabels:
       app: element
