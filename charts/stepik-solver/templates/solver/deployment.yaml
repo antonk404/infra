@@ -46,11 +46,6 @@ spec:
                   key: postgres-password
             - name: DATABASE_URL
               value: {{ .Values.env.databaseUrl | quote }}
-            - name: ANTHROPIC_API_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: stepik-solver-secret
-                  key: anthropic-api-key
           resources:
             requests:
               cpu: {{ .Values.resources.requests.cpu }}
