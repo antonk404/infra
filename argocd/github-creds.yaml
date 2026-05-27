@@ -1,0 +1,33 @@
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: github-repo-creds
+  namespace: argocd
+spec:
+  refreshInterval: "1h"
+  secretStoreRef:
+    name: vault
+    kind: ClusterSecretStore
+  target:
+    name: github-repo-creds
+    template:
+      metadata:
+        labels:
+          argocd.argoproj.io/secret-type: repo-creds
+  data:
+    - secretKey: type
+      remoteRef:
+        key: infra/argocd/github-creds
+        property: type
+    - secretKey: url
+      remoteRef:
+        key: infra/argocd/github-creds
+        property: url
+    - secretKey: username
+      remoteRef:
+        key: infra/argocd/github-creds
+        property: username
+    - secretKey: password
+      remoteRef:
+        key: infra/argocd/github-creds
+        property: password

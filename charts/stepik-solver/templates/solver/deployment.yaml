@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stepik-solver
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: stepik-solver
+  template:
+    metadata:
+      labels:
+        app: stepik-solver
+    spec:
+      nodeSelector:
+        {{- toYaml .Values.nodeSelector | nindent 8 }}
+      tolerations:
+        - key: node-role.kubernetes.io/control-plane
+          operator: Exists
+          effect: NoSchedule
+      containers:
+        - name: stepik-solver
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          ports:
+            - containerPort: {{ .Values.service.port }}
+          env:
+            - name: SERVER_MODE
+              value: {{ .Values.env.serverMode | quote }}
+            - name: AI_PROVIDER
+              value: {{ .Values.env.aiProvider | quote }}
+            - name: ANTHROPIC_MODEL
+              value: {{ .Values.env.anthropicModel | quote }}
+            - name: GEMINI_MODEL
+              value: {{ .Values.env.geminiModel | quote }}
+            - name: GROQ_MODEL
+              value: {{ .Values.env.groqModel | quote }}
+            - name: STEP_SOLVE_ATTEMPTS
+              value: {{ .Values.env.stepSolveAttempts | quote }}
+            - name: API_RETRY_ATTEMPTS
+              value: {{ .Values.env.apiRetryAttempts | quote }}
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: stepik-solver-secret
+                  key: postgres-password
+            - name: DATABASE_URL
+              value: {{ .Values.env.databaseUrl | quote }}
+            - name: ANTHROPIC_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: stepik-solver-secret
+                  key: anthropic-api-key
+          resources:
+            requests:
+              cpu: {{ .Values.resources.requests.cpu }}
+              memory: {{ .Values.resources.requests.memory }}
+            limits:
+              cpu: {{ .Values.resources.limits.cpu }}
+              memory: {{ .Values.resources.limits.memory }}

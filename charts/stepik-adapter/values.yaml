@@ -1,0 +1,30 @@
+namespace: prod
+
+image:
+  repository: antonk44/stepik-adapter-telegram
+  tag: latest
+
+nodeSelector:
+  role: hub
+
+env:
+  solverApiUrl: "http://stepik-solver:8080"
+  callbackBaseUrl: "http://31.172.71.140:30090"
+  datasourceUrl: "jdbc:postgresql://shared-postgres:5432/stepik_adapter_db"
+  datasourceUsername: "stepik_adapter"
+
+resources:
+  requests:
+    cpu: 200m
+    memory: 256Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
+
+service:
+  port: 8090
+  nodePort: 30090
+
+externalSecret:
+  refreshInterval: "1h"
+  vaultPath: infra/services/stepik-adapter

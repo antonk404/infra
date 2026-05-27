@@ -1,0 +1,33 @@
+namespace: prod
+
+image:
+  repository: antonk44/stepik-solver
+  tag: latest
+
+nodeSelector:
+  location: de
+
+env:
+  serverMode: "true"
+  aiProvider: "auto"
+  anthropicModel: "claude-sonnet-4-6"
+  geminiModel: "gemini-2.5-flash"
+  groqModel: "llama-3.3-70b-versatile"
+  stepSolveAttempts: "5"
+  apiRetryAttempts: "2"
+  databaseUrl: "postgresql://stepik:$(POSTGRES_PASSWORD)@shared-postgres:5432/stepik_cache"
+
+resources:
+  requests:
+    cpu: 200m
+    memory: 256Mi
+  limits:
+    cpu: 1000m
+    memory: 512Mi
+
+service:
+  port: 8080
+
+externalSecret:
+  refreshInterval: "1h"
+  vaultPath: infra/services/stepik-solver
