@@ -16,7 +16,7 @@ resources:
     memory: 1Gi
 
 env:
-  datasourceUrl: "jdbc:postgresql://postgres:5432/quiz_core"
+  datasourceUrl: "jdbc:postgresql://shared-postgres:5432/quiz_core"
   datasourceUsername: "quiz_core"
   kafkaBootstrapServers: "kafka:9092"
 
