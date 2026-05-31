@@ -1,7 +1,7 @@
 namespace: prod
 
 image:
-  repository: ghcr.io/antonk404/quiz-core-svc
+  repository: antonk44/quiz-core-svc
   tag: latest
 
 nodeSelector:
