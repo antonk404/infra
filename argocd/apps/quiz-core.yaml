@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/antonk404/quiz-core-svc
+    repoURL: https://gitlab.com/antonk404/infra.git
     targetRevision: HEAD
     path: charts/quiz-core
   destination:
