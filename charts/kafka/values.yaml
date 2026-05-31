@@ -1,0 +1,26 @@
+namespace: prod
+
+image:
+  repository: apache/kafka
+  tag: "4.3.0"
+
+nodeSelector:
+  role: hub
+
+replicaCount: 1
+
+kafka:
+  nodeId: "0"
+  clusterId: "MkU3OEVBNTcwNTJENDM2Qk"
+  logDirs: "/var/lib/kafka/data"
+
+resources:
+  requests:
+    cpu: 200m
+    memory: 512Mi
+  limits:
+    cpu: 1000m
+    memory: 1Gi
+
+storage:
+  size: 5Gi
