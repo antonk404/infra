@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: quiz-core-svc
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: quiz-core-svc
+  template:
+    metadata:
+      labels:
+        app: quiz-core-svc
+    spec:
+      nodeSelector:
+        {{- toYaml .Values.nodeSelector | nindent 8 }}
+      tolerations:
+        - key: node-role.kubernetes.io/control-plane
+          operator: Exists
+          effect: NoSchedule
+      containers:
+        - name: quiz-core-svc
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: {{ .Values.env.datasourceUrl | quote }}
+            - name: SPRING_DATASOURCE_USERNAME
+              value: {{ .Values.env.datasourceUsername | quote }}
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: quiz-core-secret
+                  key: db-password
+            - name: SPRING_KAFKA_BOOTSTRAP_SERVERS
+              value: {{ .Values.env.kafkaBootstrapServers | quote }}
+            - name: APP_SECURITY_API_KEY_ENCRYPTION_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: quiz-core-secret
+                  key: api-key-encryption-secret
+          resources:
+            requests:
+              cpu: {{ .Values.resources.requests.cpu }}
+              memory: {{ .Values.resources.requests.memory }}
+            limits:
+              cpu: {{ .Values.resources.limits.cpu }}
+              memory: {{ .Values.resources.limits.memory }}

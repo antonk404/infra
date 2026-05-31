@@ -1,0 +1,4 @@
+apiVersion: v2
+name: quiz-core
+description: Quiz core service
+version: 0.1.0

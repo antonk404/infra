@@ -1,0 +1,28 @@
+namespace: prod
+
+image:
+  repository: ghcr.io/antonk404/quiz-core-svc
+  tag: latest
+
+nodeSelector:
+  role: hub
+
+resources:
+  requests:
+    cpu: 200m
+    memory: 256Mi
+  limits:
+    cpu: 1000m
+    memory: 1Gi
+
+env:
+  datasourceUrl: "jdbc:postgresql://postgres:5432/quiz_core"
+  datasourceUsername: "quiz_core"
+  kafkaBootstrapServers: "kafka:9092"
+
+externalSecret:
+  refreshInterval: "1h"
+  vaultPath: services/quiz-core
+
+ingress:
+  host: ""

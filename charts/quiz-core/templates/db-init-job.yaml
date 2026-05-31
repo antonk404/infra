@@ -1,0 +1,42 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: quiz-core-db-init
+  namespace: {{ .Values.namespace }}
+  annotations:
+    argocd.argoproj.io/hook: Sync
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
+spec:
+  template:
+    spec:
+      restartPolicy: OnFailure
+      nodeSelector:
+        {{- toYaml .Values.nodeSelector | nindent 8 }}
+      tolerations:
+        - key: node-role.kubernetes.io/control-plane
+          operator: Exists
+          effect: NoSchedule
+      containers:
+        - name: db-init
+          image: postgres:15-alpine
+          command:
+            - sh
+            - -c
+            - |
+              export PGPASSWORD="$POSTGRES_ADMIN_PASSWORD"
+              PGHOST=postgres PGUSER=postgres PGDATABASE=postgres \
+                psql -v ON_ERROR_STOP=0 \
+                  -c "CREATE USER quiz_core WITH PASSWORD '$DB_PASSWORD'" \
+                  -c "CREATE DATABASE quiz_core OWNER quiz_core" \
+                  -c "GRANT ALL PRIVILEGES ON DATABASE quiz_core TO quiz_core"
+          env:
+            - name: POSTGRES_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: shared-postgres-secret
+                  key: postgres-password
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: quiz-core-secret
+                  key: db-password
