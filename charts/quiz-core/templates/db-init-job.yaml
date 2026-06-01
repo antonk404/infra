@@ -24,7 +24,7 @@ spec:
             - -c
             - |
               export PGPASSWORD="$POSTGRES_ADMIN_PASSWORD"
-              PGHOST=postgres PGUSER=postgres PGDATABASE=postgres \
+              PGHOST=shared-postgres PGUSER=postgres PGDATABASE=postgres \
                 psql -v ON_ERROR_STOP=0 \
                   -c "CREATE USER quiz_core WITH PASSWORD '$DB_PASSWORD'" \
                   -c "CREATE DATABASE quiz_core OWNER quiz_core" \
