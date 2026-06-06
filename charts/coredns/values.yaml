@@ -1,61 +1,67 @@
 namespace: prod
 
 image:
-  repository: coredns/coredns
-  tag: latest
+    repository: coredns/coredns
+    tag: latest
 
 nodeHostname: 282067.fornex.cloud
 
 resources:
-  requests:
-    cpu: 50m
-    memory: 64Mi
-  limits:
-    cpu: 200m
-    memory: 128Mi
+    requests:
+        cpu: 50m
+        memory: 64Mi
+    limits:
+        cpu: 200m
+        memory: 128Mi
 
 corefile: |
-  su {
-      bind 30.0.0.2
-      hosts {
-          30.0.0.1 filebrowser.su
-          30.0.0.1 element.su
-          30.0.0.1 matrix.su
-          fallthrough
-      }
-      cache
-      log
-  }
+    su {
+        bind 30.0.0.2
+        hosts {
+            30.0.0.1 filebrowser.su
+            30.0.0.1 element.su
+            30.0.0.1 matrix.su
+            fallthrough
+        }
+        cache
+        log
+    }
 
-  antlers {
-      bind 30.0.0.2
-      hosts {
-          30.0.0.1 frankfurt-1.hub.antlers
-          30.0.0.2 moscow-1.gate.antlers
-          30.0.0.3 moscow-2.gate.antlers
-      }
-      cache
-      log
-  }
+    antlers {
+        bind 30.0.0.2
+        hosts {
+            30.0.0.1 frankfurt-1.hub.antlers
+            30.0.0.2 moscow-1.gate.antlers
+            30.0.0.3 moscow-2.gate.antlers
+        }
+        cache
+        log
+    }
 
-  . {
-      bind 30.0.0.2
-      hosts {
-          30.0.0.1 aistudio.google.com
-          30.0.0.1 gemini.google.com
-          30.0.0.1 alkalimakersuite-pa.clients6.google.com
-          30.0.0.1 developerprofiles-pa.googleapis.com
-          30.0.0.1 notebooklm.google
-          30.0.0.1 notebooklm.google.com
-          30.0.0.1 proactivebackend-pa.googleapis.com
-          30.0.0.1 generativelanguage.googleapis.com
-          30.0.0.1 google.com
-          0.0.0.0 promoted.soundcloud.com
-          0.0.0.0 events-api.soundcloud.com
-          0.0.0.0 telemetry.soundcloud.com
-          fallthrough
-      }
-      forward . 8.8.8.8 1.1.1.1
-      cache
-      log
-  }
+    . {
+        bind 30.0.0.2
+        hosts {
+            30.0.0.1 aistudio.google.com
+            30.0.0.1 gemini.google.com
+            30.0.0.1 alkalimakersuite-pa.clients6.google.com
+            30.0.0.1 developerprofiles-pa.googleapis.com
+            30.0.0.1 notebooklm.google
+            30.0.0.1 notebooklm.google.com
+            30.0.0.1 instagram.com
+            30.0.0.1 www.instagram.com
+            30.0.0.1 i.instagram.com
+            30.0.0.1 graph.instagram.com
+            30.0.0.1 cdninstagram.com
+            30.0.0.1 fbcdn.net
+            30.0.0.1 proactivebackend-pa.googleapis.com
+            30.0.0.1 generativelanguage.googleapis.com
+            30.0.0.1 google.com
+            0.0.0.0 promoted.soundcloud.com
+            0.0.0.0 events-api.soundcloud.com
+            0.0.0.0 telemetry.soundcloud.com
+            fallthrough
+        }
+        forward . 8.8.8.8 1.1.1.1
+        cache
+        log
+    }
