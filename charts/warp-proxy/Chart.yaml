@@ -1,4 +1,0 @@
-apiVersion: v2
-name: warp-proxy
-description: SNI proxy for routing traffic through WARP
-version: 0.1.0

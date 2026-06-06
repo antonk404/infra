@@ -1,6 +1,0 @@
-namespace: prod
-
-nodeHostname: 273256.fornex.cloud
-
-listenAddr: 30.0.0.1
-bindAddr: 172.16.0.2
