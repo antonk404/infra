@@ -27,12 +27,12 @@ corefile: |
         log
     }
 
-    antlers {
+    prod {
         bind 30.0.0.2
         hosts {
-            30.0.0.1 frankfurt-1.hub.antlers
-            30.0.0.2 moscow-1.gate.antlers
-            30.0.0.3 moscow-2.gate.antlers
+            30.0.0.1 frankfurt-1.hub.prod
+            30.0.0.2 moscow-1.gate.prod
+            30.0.0.3 moscow-2.gate.prod
         }
         cache
         log
@@ -41,21 +41,21 @@ corefile: |
     . {
         bind 30.0.0.2
         hosts {
-            30.0.0.1 aistudio.google.com
-            30.0.0.1 gemini.google.com
-            30.0.0.1 alkalimakersuite-pa.clients6.google.com
-            30.0.0.1 developerprofiles-pa.googleapis.com
-            30.0.0.1 notebooklm.google
-            30.0.0.1 notebooklm.google.com
-            30.0.0.1 instagram.com
-            30.0.0.1 www.instagram.com
-            30.0.0.1 i.instagram.com
-            30.0.0.1 graph.instagram.com
-            30.0.0.1 cdninstagram.com
-            30.0.0.1 fbcdn.net
-            30.0.0.1 proactivebackend-pa.googleapis.com
-            30.0.0.1 generativelanguage.googleapis.com
-            30.0.0.1 google.com
+            30.0.0.2 aistudio.google.com
+            30.0.0.2 gemini.google.com
+            30.0.0.2 alkalimakersuite-pa.clients6.google.com
+            30.0.0.2 developerprofiles-pa.googleapis.com
+            30.0.0.2 notebooklm.google
+            30.0.0.2 notebooklm.google.com
+            30.0.0.2 instagram.com
+            30.0.0.2 www.instagram.com
+            30.0.0.2 i.instagram.com
+            30.0.0.2 graph.instagram.com
+            30.0.0.2 cdninstagram.com
+            30.0.0.2 fbcdn.net
+            30.0.0.2 proactivebackend-pa.googleapis.com
+            30.0.0.2 generativelanguage.googleapis.com
+            30.0.0.2 google.com
             0.0.0.0 promoted.soundcloud.com
             0.0.0.0 events-api.soundcloud.com
             0.0.0.0 telemetry.soundcloud.com
