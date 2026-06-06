@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: warp-proxy-config
+  namespace: {{ .Values.namespace }}
+data:
+  nginx.conf: |
+    events {}
+    stream {
+        resolver 8.8.8.8 valid=30s ipv6=off;
+        server {
+            listen {{ .Values.listenAddr }}:443;
+            ssl_preread on;
+            proxy_bind {{ .Values.bindAddr }};
+            proxy_pass $ssl_preread_server_name:443;
+        }
+    }
