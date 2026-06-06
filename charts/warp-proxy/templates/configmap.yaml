@@ -5,9 +5,11 @@ metadata:
   namespace: {{ .Values.namespace }}
 data:
   nginx.conf: |
+    error_log /dev/stderr warn;
     events {}
     stream {
         resolver 8.8.8.8 valid=30s ipv6=off;
+        error_log /dev/stderr warn;
         server {
             listen {{ .Values.listenAddr }}:443;
             ssl_preread on;
