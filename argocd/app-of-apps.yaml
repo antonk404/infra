@@ -9,6 +9,8 @@ spec:
     repoURL: https://gitlab.com/antonk404/infra.git
     targetRevision: HEAD
     path: argocd/apps
+    directory:
+      recurse: false
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd
