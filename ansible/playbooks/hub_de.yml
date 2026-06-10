@@ -1,5 +1,5 @@
 - name: Configure hub server
-  hosts: hub
+  hosts: hub_de
   roles:
     - common/docker
     - nginx
