@@ -1,0 +1,12 @@
+[Unit]
+Description=Restore per-user AWG hub routing on boot
+After=awg-quick@awg0.service awg-quick@awg1.service awg-quick@awg2.service
+Wants=awg-quick@awg0.service awg-quick@awg1.service awg-quick@awg2.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/switch-hub
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
