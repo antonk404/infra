@@ -1,3 +1,38 @@
+- name: Check if awg is installed
+  command: which awg
+  register: awg_check
+  failed_when: false
+  changed_when: false
+
+- name: Install software-properties-common
+  apt:
+    name: software-properties-common
+    state: present
+  when: awg_check.rc != 0
+
+- name: Add AmneziaWG apt repository
+  apt_repository:
+    repo: "ppa:amnezia/ppa"
+    state: present
+    update_cache: yes
+  when: awg_check.rc != 0
+
+- name: Install AmneziaWG
+  apt:
+    name:
+      - amneziawg
+      - amneziawg-tools
+    state: present
+  when: awg_check.rc != 0
+
+- name: Ensure routing tables are defined
+  lineinfile:
+    path: /etc/iproute2/rt_tables
+    line: "{{ item }}"
+    state: present
+  loop:
+    - "201 wgshared"
+
 - name: Ensure amneziawg config directory exists
   file:
     path: /etc/amnezia/amneziawg
@@ -37,3 +72,43 @@
     state: started
     enabled: yes
   loop: "{{ awg_vault_secrets.results }}"
+
+- name: Deploy awg0 PostUp script
+  copy:
+    src: awg0-postup.sh
+    dest: /usr/local/bin/awg0-postup.sh
+    owner: root
+    mode: '0755'
+  when: "'gate' in group_names"
+
+- name: Deploy awg0 PostDown script
+  copy:
+    src: awg0-postdown.sh
+    dest: /usr/local/bin/awg0-postdown.sh
+    owner: root
+    mode: '0755'
+  when: "'gate' in group_names"
+
+- name: Deploy switch-hub script
+  copy:
+    src: switch-hub.sh
+    dest: /usr/local/bin/switch-hub
+    owner: root
+    mode: '0755'
+  when: "'gate' in group_names"
+
+- name: Deploy awg-hub-router systemd service
+  copy:
+    src: awg-hub-router.service
+    dest: /etc/systemd/system/awg-hub-router.service
+    owner: root
+    mode: '0644'
+  when: "'gate' in group_names"
+
+- name: Enable and start awg-hub-router service
+  systemd:
+    name: awg-hub-router
+    state: started
+    enabled: yes
+    daemon_reload: yes
+  when: "'gate' in group_names"
