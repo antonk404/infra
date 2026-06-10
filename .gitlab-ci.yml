@@ -13,6 +13,7 @@ validate:ansible:
     - infra
   script:
     - ansible-playbook ansible/playbooks/hub.yml --syntax-check
+    - ansible-playbook ansible/playbooks/hub-us.yml --syntax-check
     - ansible-playbook ansible/playbooks/gate.yml --syntax-check
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
@@ -47,6 +48,23 @@ deploy:hub:
         - ansible/roles/nginx/**
         - ansible/roles/amneziawg/**
         - ansible/playbooks/hub.yml
+
+deploy:hub-us:
+  stage: deploy
+  tags:
+    - infra
+  environment:
+    name: production/hub-us
+  script:
+    - echo "$ANSIBLE_VAULT_PASS" > /tmp/.vault_pass
+    - ansible-playbook ansible/playbooks/hub-us.yml --vault-password-file /tmp/.vault_pass
+  after_script:
+    - rm -f /tmp/.vault_pass
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      changes:
+        - ansible/roles/amneziawg/**
+        - ansible/playbooks/hub-us.yml
 
 deploy:gate:
   stage: deploy

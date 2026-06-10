@@ -1,0 +1,6 @@
+- name: Configure US Hub server
+  hosts: hub_us
+  roles:
+    - common/docker
+    - amneziawg
+    - services/monitoring/node-exporter
