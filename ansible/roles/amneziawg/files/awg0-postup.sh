@@ -99,6 +99,8 @@ ip route add 217.144.98.231     via 81.85.78.1 dev eth0 table wgshared
 ip route add 37.200.70.176      via 81.85.78.1 dev eth0 table wgshared
 # app.pachca.com
 ip route add 91.105.198.132     via 81.85.78.1 dev eth0 table wgshared
+# matchtv
+ip route add 95.181.181.0/24    via 81.85.78.1 dev eth0 table wgshared
 
 # Route all VPN clients through wgshared for Russian routes (prio 50)
 ip rule add from 10.2.0.0/24 prio 50 lookup wgshared
