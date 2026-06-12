@@ -100,7 +100,7 @@ ip route add 37.200.70.176      via 81.85.78.1 dev eth0 table wgshared
 # app.pachca.com
 ip route add 91.105.198.132     via 81.85.78.1 dev eth0 table wgshared
 # matchtv (GPM Digital Technologies + CDN)
-ip route add 95.181.181.0/24    via 81.85.78.1 dev eth0 table wgshared
+ip route add 95.181.176.0/21    via 81.85.78.1 dev eth0 table wgshared
 ip route add 194.190.130.0/24   via 81.85.78.1 dev eth0 table wgshared
 ip route add 193.232.148.0/22   via 81.85.78.1 dev eth0 table wgshared
 ip route add 194.190.76.0/23    via 81.85.78.1 dev eth0 table wgshared
