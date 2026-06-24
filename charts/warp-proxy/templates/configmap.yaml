@@ -17,6 +17,12 @@ data:
             notebooklm.google.com                       notebooklm.google.com:443;
             proactivebackend-pa.googleapis.com          proactivebackend-pa.googleapis.com:443;
             generativelanguage.googleapis.com           generativelanguage.googleapis.com:443;
+            instagram.com                               instagram.com:443;
+            www.instagram.com                           www.instagram.com:443;
+            i.instagram.com                             i.instagram.com:443;
+            graph.instagram.com                         graph.instagram.com:443;
+            cdninstagram.com                            cdninstagram.com:443;
+            fbcdn.net                                   fbcdn.net:443;
         }
         server {
             listen 30.0.0.1:443;

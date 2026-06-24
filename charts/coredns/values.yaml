@@ -50,6 +50,12 @@ corefile: |
             30.0.0.1 proactivebackend-pa.googleapis.com
             30.0.0.1 generativelanguage.googleapis.com
             30.0.0.1 google.com
+            30.0.0.1 instagram.com
+            30.0.0.1 www.instagram.com
+            30.0.0.1 i.instagram.com
+            30.0.0.1 graph.instagram.com
+            30.0.0.1 cdninstagram.com
+            30.0.0.1 fbcdn.net
             0.0.0.0 promoted.soundcloud.com
             0.0.0.0 events-api.soundcloud.com
             0.0.0.0 telemetry.soundcloud.com
