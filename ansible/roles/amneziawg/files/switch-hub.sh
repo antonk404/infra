@@ -27,15 +27,20 @@ switch_user() {
     local IP="$1" HUB="$2"
     local OCTET="${IP##*.}"
     local TABLE=$((200 + OCTET))
-    local DEV
+    local DEV GW
 
     case "$HUB" in
         us) DEV=awg2 ;;
         de) DEV=awg1 ;;
-        *) echo "Unknown hub: $HUB (use de or us)" >&2; exit 1 ;;
+        ru) DEV=eth0; GW=81.85.78.1 ;;
+        *) echo "Unknown hub: $HUB (use de, us, or ru)" >&2; exit 1 ;;
     esac
 
-    ip route replace default dev "$DEV" table "$TABLE"
+    if [ -n "$GW" ]; then
+        ip route replace default via "$GW" dev "$DEV" table "$TABLE"
+    else
+        ip route replace default dev "$DEV" table "$TABLE"
+    fi
 
     sed -i "/^$IP /d" "$HUB_STATE" 2>/dev/null || true
     echo "$IP $HUB" >> "$HUB_STATE"
@@ -67,7 +72,7 @@ TARGET="$1"
 HUB="$2"
 
 if [ -z "$HUB" ]; then
-    echo "Usage: switch-hub <username|10.2.0.N> <de|us>" >&2
+    echo "Usage: switch-hub <username|10.2.0.N> <de|us|ru>" >&2
     exit 1
 fi
 

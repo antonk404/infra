@@ -89,12 +89,17 @@
     mode: '0755'
   when: "'gate' in group_names"
 
-- name: Deploy switch-hub script
+- name: Deploy gate management scripts
   copy:
-    src: switch-hub.sh
-    dest: /usr/local/bin/switch-hub
+    src: "{{ item }}.sh"
+    dest: "/etc/amnezia/amneziawg/{{ item }}.sh"
     owner: root
     mode: '0755'
+  loop:
+    - switch-hub
+    - add-client
+    - del-client
+    - list-clients
   when: "'gate' in group_names"
 
 - name: Deploy awg-hub-router systemd service
